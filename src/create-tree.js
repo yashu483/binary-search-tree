@@ -59,6 +59,39 @@ class Tree {
     };
     insertRec(this.root, value);
   }
+  delete(value) {
+    const findSuccessor = function findSuccessor(curr) {
+      curr = curr.right;
+      while (curr !== null && curr.left !== null) {
+        curr = curr.left;
+      }
+      return curr;
+    };
+
+    const deleteRec = function deleteRec(root, value) {
+      if (root === null) {
+        return root;
+      }
+
+      if (root.data > value) {
+        root.left = deleteRec(root.left, value);
+      } else if (root.data < value) {
+        root.right = deleteRec(root.right, value);
+      } else {
+        if (root.left === null) {
+          return root.right;
+        }
+        if (root.right === null) {
+          return root.left;
+        }
+        const successor = findSuccessor(root);
+        root.data = successor.data;
+        root.right = deleteRec(root.right, successor.data);
+      }
+      return root;
+    };
+    deleteRec(this.root, value);
+  }
 }
 
 export { Tree };
