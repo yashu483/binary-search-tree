@@ -38,6 +38,27 @@ class Tree {
       this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
   };
+
+  insert(value) {
+    const insertRec = function insertRec(root, value) {
+      if (root === null) {
+        const node = new Node(value);
+        return node;
+      }
+
+      if (root.data === value) {
+        return root;
+      }
+
+      if (value < root.data) {
+        root.left = insertRec(root.left, value);
+      } else if (value > root.data) {
+        root.right = insertRec(root.right, value);
+      }
+      return root;
+    };
+    insertRec(this.root, value);
+  }
 }
 
 export { Tree };
