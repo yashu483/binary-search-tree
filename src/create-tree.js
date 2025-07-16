@@ -92,6 +92,22 @@ class Tree {
     };
     deleteRec(this.root, value);
   }
+
+  find(value) {
+    let currentRoot = this.root;
+    while (currentRoot.data !== value) {
+      if (value < currentRoot.data) {
+        currentRoot = currentRoot.left;
+      } else {
+        currentRoot = currentRoot.right;
+      }
+      if (currentRoot === null) {
+        return null;
+      }
+    }
+
+    return currentRoot;
+  }
 }
 
 export { Tree };
