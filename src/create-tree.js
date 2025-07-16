@@ -108,6 +108,27 @@ class Tree {
 
     return currentRoot;
   }
+  levelOrderForEach(callback) {
+    if (typeof callback !== 'function') {
+      throw new Error('Callback is required');
+    }
+    let currentRoot = this.root;
+    let que = [currentRoot];
+    while (que.length !== 0) {
+      if (que[0] === null) {
+        que.shift();
+        currentRoot = que[0];
+        continue;
+      }
+      que.push(currentRoot.left);
+      que.push(currentRoot.right);
+
+      let item = que.shift();
+
+      callback(item);
+      currentRoot = que[0];
+    }
+  }
 }
 
 export { Tree };
