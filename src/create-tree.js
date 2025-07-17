@@ -151,6 +151,23 @@ class Tree {
     };
     inOrder(this.root);
   }
+
+  preOrderForEach(callback) {
+    const preOrder = function preOrder(root) {
+      if (root.left === null && root.right === null) {
+        callback(root);
+      } else if (root.left !== null) {
+        callback(root);
+        preOrder(root.left);
+      } else if (root.left === null) {
+        callback(root);
+      }
+      if (root.right !== null) {
+        preOrder(root.right);
+      }
+    };
+    preOrder(this.root);
+  }
 }
 
 export { Tree };
