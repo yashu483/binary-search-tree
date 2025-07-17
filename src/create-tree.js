@@ -236,15 +236,73 @@ class Tree {
     if (currentRoot === null) return null;
     return count;
   }
+
   isBalanced() {
-    const rightDepth = this.#findHeight(this.root.right);
-    const leftDepth = this.#findHeight(this.root.left);
-    console.log(leftDepth, rightDepth);
-    const dif =
-      Math.max(rightDepth, leftDepth) - Math.min(rightDepth, leftDepth);
-    console.log(dif);
-    if (dif > 1) return false;
-    return true;
+    let count = 0;
+    const findHeight = function findHeight(root) {
+      count += 1;
+      if (root === null) return 0;
+      if (root.left === null && root.right === null) {
+        return 0;
+      } else if (root.left === null || root.right === null) {
+        if (root.left === null) return findHeight(root.right) + 1;
+        return findHeight(root.left) + 1;
+      } else {
+        let left = findHeight(root.left);
+        let right = findHeight(root.right);
+        return Math.max(left, right) + 1;
+      }
+    };
+    let balance = true;
+
+    const postOrderIterator = function postOrderIterator(root) {
+      count += 1;
+
+      if (!balance) {
+        return;
+      }
+      if (root.left === null && root.right === null) {
+        return;
+      } else if (root.left !== null) {
+        postOrderIterator(root.left);
+        if (root.right !== null) {
+          postOrderIterator(root.right);
+          const leftHeight = findHeight(root.left);
+          const rightHeight = findHeight(root.right);
+          const dif =
+            Math.max(leftHeight, rightHeight) -
+            Math.min(leftHeight, rightHeight);
+          if (dif > 1) balance = false;
+          return;
+        }
+        const leftHeight = findHeight(root.left);
+        const rightHeight = findHeight(root.right);
+        const dif =
+          Math.max(leftHeight, rightHeight) - Math.min(leftHeight, rightHeight);
+        if (dif > 1) balance = false;
+        return;
+      } else if (root.left === null && root.right !== null) {
+        postOrderIterator(root.right);
+        const leftHeight = findHeight(root.left);
+        const rightHeight = findHeight(root.right);
+        const dif =
+          Math.max(leftHeight, rightHeight) - Math.min(leftHeight, rightHeight);
+        if (dif > 1) balance = false;
+        return;
+      }
+    };
+    postOrderIterator(this.root);
+    console.log(count);
+    return balance;
+  }
+
+  rebalance() {
+    const sortedArr = [];
+    this.inOrderForEach((node) => {
+      sortedArr.push(node.data);
+    });
+    this.array = sortedArr;
+    this.root = this.buildTree(this.array);
   }
 }
 
