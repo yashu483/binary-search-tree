@@ -129,6 +129,28 @@ class Tree {
       currentRoot = que[0];
     }
   }
+
+  inOrderForEach(callback) {
+    if (typeof callback !== 'function') {
+      throw new Error('Error: argument to method should be a function');
+    }
+
+    const inOrder = function inOrder(root) {
+      if (root.left === null && root.right === null) {
+        callback(root);
+      } else if (root.left !== null) {
+        inOrder(root.left);
+
+        callback(root);
+      } else if (root.left === null) {
+        callback(root);
+      }
+      if (root.right !== null) {
+        inOrder(root.right);
+      }
+    };
+    inOrder(this.root);
+  }
 }
 
 export { Tree };
