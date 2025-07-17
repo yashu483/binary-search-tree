@@ -168,6 +168,26 @@ class Tree {
     };
     preOrder(this.root);
   }
+
+  postOrderForEach(callback) {
+    const postOrder = function postOrder(root) {
+      if (root.left === null && root.right === null) {
+        callback(root);
+      } else if (root.left !== null) {
+        postOrder(root.left);
+        if (root.right !== null) {
+          postOrder(root.right);
+          callback(root);
+          return;
+        }
+        callback(root);
+      } else if (root.left === null && root.right !== null) {
+        postOrder(root.right);
+        callback(root);
+      }
+    };
+    postOrder(this.root);
+  }
 }
 
 export { Tree };
