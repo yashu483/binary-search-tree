@@ -188,6 +188,64 @@ class Tree {
     };
     postOrder(this.root);
   }
+  #findHeight(root) {
+    if (root === null) return 0;
+    if (root.left === null && root.right === null) {
+      return 0;
+    } else if (root.left === null || root.right === null) {
+      if (root.left === null) return this.#findHeight(root.right) + 1;
+      return this.#findHeight(root.left) + 1;
+    } else {
+      let left = this.#findHeight(root.left);
+      let right = this.#findHeight(root.right);
+      return Math.max(left, right) + 1;
+    }
+  }
+  height(value) {
+    let currentRoot = this.root;
+    while (currentRoot.data !== value) {
+      if (value < currentRoot.data) {
+        currentRoot = currentRoot.left;
+      } else {
+        currentRoot = currentRoot.right;
+      }
+      if (currentRoot === null) {
+        return null;
+      }
+    }
+    if (currentRoot === null) return null;
+
+    return this.#findHeight(currentRoot);
+  }
+
+  depth(value) {
+    let currentRoot = this.root;
+    let count = 0;
+    while (currentRoot.data !== value) {
+      if (value < currentRoot.data) {
+        count += 1;
+        currentRoot = currentRoot.left;
+      } else {
+        count += 1;
+        currentRoot = currentRoot.right;
+      }
+      if (currentRoot === null) {
+        return null;
+      }
+    }
+    if (currentRoot === null) return null;
+    return count;
+  }
+  isBalanced() {
+    const rightDepth = this.#findHeight(this.root.right);
+    const leftDepth = this.#findHeight(this.root.left);
+    console.log(leftDepth, rightDepth);
+    const dif =
+      Math.max(rightDepth, leftDepth) - Math.min(rightDepth, leftDepth);
+    console.log(dif);
+    if (dif > 1) return false;
+    return true;
+  }
 }
 
 export { Tree };
